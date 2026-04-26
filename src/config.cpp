@@ -40,16 +40,19 @@ Result<AppConfig> parse_args(int argc, const char** argv){
                 res.error.code = ErrorCode::InvalidArgument;
                 res.error.message = "Invalid argument " + arg + " for log-level!";
                 log_error(res.error.message);
-                break;
+                res.ok = false;
+                return res;
             }
         }
         else {
             res.error.code = ErrorCode::InvalidArgument;
             res.error.message = "Invalid argument " + arg + " for debugger!";
             log_error(res.error.message);
-            break;
+            res.ok = false;
+            return res;
         }
     }
+    res.ok = true;
     return res;
 }
 

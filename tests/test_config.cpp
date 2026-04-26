@@ -10,6 +10,7 @@ TEST(ConfigTest, HelpTest){
     sdb::Result<sdb::AppConfig> res = sdb::parse_args(2, argv);
 
     EXPECT_TRUE(res.value.show_help);
+    EXPECT_TRUE(res.ok);
 }
 
 TEST(ConfigTest, LoglevelTest){
@@ -36,5 +37,6 @@ TEST(ConfigTest, InvalidArgTest){
     sdb::Result<sdb::AppConfig> res = sdb::parse_args(2, argv);
 
     EXPECT_FALSE(res.error.ok());
+    EXPECT_FALSE(res.ok);
     EXPECT_EQ(res.error.code, sdb::ErrorCode::InvalidArgument);
 }
