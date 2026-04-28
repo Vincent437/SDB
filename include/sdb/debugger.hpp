@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <signal.h>
 #include "sdb/types.hpp"
 #include "sdb/trace.hpp"
 

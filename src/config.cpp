@@ -50,6 +50,14 @@ Result<AppConfig> parse_args(int argc, const char** argv){
             return res;
         }
     }
+
+    if(!res.value.show_help && res.value.target_program.empty()){
+        res.error.code = ErrorCode::InvalidArgument;
+        res.error.message = "No program name found for debugger!";
+        res.ok = false;
+        return res;
+    }
+
     res.ok = true;
     return res;
 }

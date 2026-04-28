@@ -11,6 +11,7 @@ bool sdb::Debugger::launch(const std::string& program, const std::vector<std::st
     auto launch_res = sdb::launch_traced_process(program, args);
 
     if (!launch_res.ok){
+        if(launch_res.value>0) waitpid(launch_res.value, nullptr, 0);
         state_ = sdb::DebuggerState::Error;
         last_error_ = launch_res.error;
         return false;
@@ -26,6 +27,12 @@ bool sdb::Debugger::launch(const std::string& program, const std::vector<std::st
         return true;
     }
     else{
+        if((wait_res.value.reason == sdb::StopReason::SignalStop 
+            || wait_res.value.reason == sdb::StopReason::None) 
+            && pid_>0){
+            kill(pid_, SIGTERM);
+            waitpid(pid_, nullptr, 0);
+        }
         state_ = sdb::DebuggerState::Error;
         last_error_ = wait_res.error;
         return false;

@@ -14,6 +14,7 @@ add_library(sdb_core
     src/config.cpp
     src/trace.cpp
     src/debugger.cpp
+    src/utils.cpp
 )
 
 target_include_directories(sdb_core

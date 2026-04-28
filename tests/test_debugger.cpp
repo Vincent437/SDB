@@ -9,6 +9,8 @@ TEST(DebuggerTest, LaunchSuccess) {
     EXPECT_TRUE(res);
     EXPECT_EQ(dbg.state(), sdb::DebuggerState::Stopped);
     EXPECT_GT(dbg.pid(),0);
+    kill(dbg.pid(), SIGKILL);
+    waitpid(dbg.pid(), nullptr, 0);
 }
 
 TEST(DebuggerTest, LaunchFailure) {
@@ -19,4 +21,6 @@ TEST(DebuggerTest, LaunchFailure) {
 
     EXPECT_FALSE(res);
     EXPECT_EQ(dbg.state(), sdb::DebuggerState::Error);
+    kill(dbg.pid(), SIGKILL);
+    waitpid(dbg.pid(), nullptr, 0);
 }

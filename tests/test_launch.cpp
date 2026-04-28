@@ -9,6 +9,8 @@ TEST(LaunchTest, LaunchTracedProcessSuccess) {
 
     EXPECT_TRUE(res.ok);
     EXPECT_GT(res.value, 0);
+    kill(res.value, SIGKILL);
+    waitpid(res.value, nullptr, 0);
 }
 
 TEST(LaunchTest, LaunchTracedProcessFailure) {
@@ -16,6 +18,6 @@ TEST(LaunchTest, LaunchTracedProcessFailure) {
 
     auto res = sdb::launch_traced_process(program, {});
 
-    EXPECT_TRUE(res.ok);
-    EXPECT_GT(res.value, 0);
+    EXPECT_FALSE(res.ok);
+    if(res.value>0) waitpid(res.value, nullptr, 0);
 }

@@ -15,8 +15,11 @@ int main(int argc, const char** argv){
         return 1;
     }
 
-    sdb::g_log_level = parse_res.value.log_level;
-    if(parse_res.value.show_help) sdb::show_help();
+    sdb::set_log_level(parse_res.value.log_level);
+    if(parse_res.value.show_help){
+        sdb::show_help();
+        return 0;
+    }
 
     sdb::Debugger dbg{};
     if(!dbg.launch(parse_res.value.target_program, parse_res.value.target_args)){
@@ -24,11 +27,10 @@ int main(int argc, const char** argv){
         return 1;
     }
 
-    sdb::log_debug("attached pid = "+std::to_string(dbg.pid())+"\n" + 
+    sdb::log_info("attached pid = "+std::to_string(dbg.pid())+"\n" + 
                     "initial stop: SIGTRAP\n" + 
                     "state=Stopped");
     
-
     std::string input;
     
     while(true){
