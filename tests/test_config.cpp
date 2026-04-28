@@ -26,6 +26,7 @@ TEST(ConfigTest, LoglevelTest){
     EXPECT_EQ(res.value.log_level, sdb::LogLevel::Debug);
     EXPECT_EQ(res.value.target_program, "/bin/ls");
     EXPECT_EQ(res.value.target_args, std::vector<std::string>{"-l"});
+    EXPECT_TRUE(res.ok);
 }
 
 TEST(ConfigTest, InvalidArgTest){

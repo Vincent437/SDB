@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <errno.h>
 
 namespace sdb {
 
@@ -18,13 +17,6 @@ struct Error {
     std::string message;
 
     bool ok() const noexcept { return code == ErrorCode::Ok; }
-};
-
-template <typename T>
-struct Result {
-    T value{};
-    Error error{};
-    bool ok{false};
 };
 
 inline Error make_system_error(const std::string& msg, int err){

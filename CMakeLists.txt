@@ -7,27 +7,34 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(SOURCES
-    src/main.cpp
+add_library(sdb_core
     src/config.cpp
+    src/trace.cpp
+    src/debugger.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
-
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
+target_include_directories(sdb_core
+    PUBLIC ${PROJECT_SOURCE_DIR}/include
 )
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+
+# target_include_directories(${PROJECT_NAME}
+#     PRIVATE
+#         ${PROJECT_SOURCE_DIR}/include
+# )
 
 target_compile_options(${PROJECT_NAME}
     PRIVATE
         -Wall -Wextra -Wpedantic
+        $<$<CONFIG:Debug>:-fno-omit-frame-pointer>
+        $<$<CONFIG:Debug>:-fno-inline>
 )
 
-# target_link_libraries(${PROJECT_NAME} PRIVATE some_library)
+target_link_libraries(${PROJECT_NAME} PRIVATE sdb_core)
 
 include(FetchContent)
 
@@ -45,19 +52,22 @@ set(TEST_SOURCES
     tests/test_error.cpp
     tests/test_logger.cpp
     tests/test_config.cpp
-    src/config.cpp
+    tests/test_launch.cpp
+    tests/test_handshake.cpp
+    tests/test_debugger.cpp
 )
 
 add_executable(my_tests ${TEST_SOURCES})
 
-target_include_directories(my_tests
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
-)
+# target_include_directories(my_tests
+#     PRIVATE
+#         ${PROJECT_SOURCE_DIR}/include
+# )
 
 target_link_libraries(my_tests
     PRIVATE
         GTest::gtest_main
+        sdb_core
 )
 
 include(GoogleTest)

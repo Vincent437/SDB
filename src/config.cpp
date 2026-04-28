@@ -39,7 +39,6 @@ Result<AppConfig> parse_args(int argc, const char** argv){
             else {
                 res.error.code = ErrorCode::InvalidArgument;
                 res.error.message = "Invalid argument " + arg + " for log-level!";
-                log_error(res.error.message);
                 res.ok = false;
                 return res;
             }
@@ -47,13 +46,16 @@ Result<AppConfig> parse_args(int argc, const char** argv){
         else {
             res.error.code = ErrorCode::InvalidArgument;
             res.error.message = "Invalid argument " + arg + " for debugger!";
-            log_error(res.error.message);
             res.ok = false;
             return res;
         }
     }
     res.ok = true;
     return res;
+}
+
+void show_help(){
+    std::cout<<"Here is the help information."<<std::endl;
 }
 
 } // namespace sdb

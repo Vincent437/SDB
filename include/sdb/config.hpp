@@ -2,7 +2,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
-#include "error.hpp"
+#include "result.hpp"
 #include "logger.hpp"
 
 namespace sdb {
@@ -16,5 +16,7 @@ public:
 };
 
 Result<AppConfig> parse_args(int argc, const char** argv);
+
+void show_help();
 
 } // namespace sdb
